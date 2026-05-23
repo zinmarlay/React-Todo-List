@@ -1,28 +1,29 @@
-function Item({name}){
-  return <li>{name}</li>;
+import { useState } from "react";
+
+function Item({ item }) {
+    return <li>{item.name}</li>;
 }
 
-const data = [
-  {id:3, name:"Bread",done:false},
-  {id:2, name:"Butter",done:true},
-  {id:1, name:"Banana",done:false},
-];
-
 export default function App() {
-    return(
-       <div>
-        <h1>Hello React</h1>
-        <ul>
-          {data.map(item => {
-            return <Item name={item.name}/>
-          })}
+    const [data, setData] = useState([
+        { id: 3, name: "Bread", done: false },
+        { id: 2, name: "Butter", done: true },
+        { id: 1, name: "Banana", done: false },
+    ]);
 
-          {data.map(item => <Item name={item.name}/>)}
+    const addItem = () => {
+        setData([{ id: 4, name: "Egg", done: false }, ...data]);
+    }
 
-          {data.map(item => (
-            <Item name={item.name}/>
-          ))}
-        </ul>
-    </div>
+    return (
+        <div>
+            <h1>Hello React ({data.length})</h1>
+            <button onClick={addItem}>Add</button>
+            <ul>
+                {data.map(item => {
+                    return <Item key={item.id} item={item} />
+                })}
+            </ul>
+        </div>
     );
 }
