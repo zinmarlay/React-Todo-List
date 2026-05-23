@@ -1,8 +1,7 @@
-// App.jsx
 import { useState, useRef } from "react";
 
-import Item  from "./assets/item";
-import Header from "./assets/header";
+import Item from "./Item";
+import Header from "./Header";
 
 export default function App() {
     const inputRef = useRef();
@@ -14,10 +13,14 @@ export default function App() {
     ]);
 
     const addItem = () => {
-        const id = data[0].id + 1;
+        const id = data[0] ? data[0].id + 1 : 1;
         const name = inputRef.current.value;
 
         setData([{ id, name, done: false }, ...data]);
+    }
+
+    const delItem = id => {
+        setData(data.filter(item => item.id != id));
     }
     return (
         <div>
@@ -37,6 +40,7 @@ export default function App() {
                         <Item
                             key={item.id}
                             item={item}
+                            remove={delItem}
                         />
                     );
                 })}
