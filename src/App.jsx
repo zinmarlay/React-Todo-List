@@ -1,8 +1,8 @@
+// App.jsx
 import { useState, useRef } from "react";
 
-function Item({ item }) {
-    return <li>{item.name}</li>;
-}
+import Item  from "./assets/item";
+import Header from "./assets/header";
 
 export default function App() {
     const inputRef = useRef();
@@ -19,10 +19,10 @@ export default function App() {
 
         setData([{ id, name, done: false }, ...data]);
     }
-
-return (
+    return (
         <div>
-            <h1>Hello React ({data.length})</h1>
+            <Header count={data.length} />
+            
             <form onSubmit={e => {
                 e.preventDefault();
                 addItem();
