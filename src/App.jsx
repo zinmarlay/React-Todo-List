@@ -3,6 +3,10 @@ import { useState, useRef } from "react";
 import Item from "./Item";
 import Header from "./Header";
 
+import { Container, List, OutlinedInput, IconButton, Divider } from "@mui/material";
+
+import { Add as AddIcon } from "@mui/icons-material";
+
 export default function App() {
     const inputRef = useRef();
 
@@ -17,34 +21,77 @@ export default function App() {
         const name = inputRef.current.value;
 
         setData([{ id, name, done: false }, ...data]);
-    }
+    };
 
     const delItem = id => {
         setData(data.filter(item => item.id != id));
-    }
+    };
+
+    
+const toggle = id => {
+        setData(
+            data.map(item => {
+                if (item.id == id) item.done = !item.done;
+                return item;
+            }),
+        );
+    };
+    
     return (
         <div>
-            <Header count={data.length} />
-            
-            <form onSubmit={e => {
-                e.preventDefault();
-                addItem();
-                e.currentTarget.reset();
-            }}>
-                <input type="text" ref={inputRef} />
-                <button type="submit">Add</button>
-            </form>
-            <ul>
-                {data.map(item => {
-                    return (
-                        <Item
-                            key={item.id}
-                            item={item}
-                            remove={delItem}
-                        />
-                    );
-                })}
-            </ul>
+            <Header count={data.filter(item => !item.done).length} />
+
+            <Container
+                maxWidth="sm"
+                sx={{ mt: 4 }}>
+                <form
+                    onSubmit={e => {
+                        e.preventDefault();
+                        addItem();
+                        e.currentTarget.reset();
+                    }}>
+                    <OutlinedInput
+                        fullWidth
+                        type="text"
+                        inputRef={inputRef}
+                        endAdornment={
+                            <IconButton type="submit">
+                                <AddIcon />
+                            </IconButton>
+                        }
+                    />
+                </form>
+                  <List>
+                    {data
+                        .filter(item => !item.done)
+                        .map(item => {
+                            return (
+                                <Item
+                                    key={item.id}
+                                    item={item}
+                                    remove={delItem}
+                                    toggle={toggle}
+                                />
+                            );
+                        })}
+                </List>
+                <Divider></Divider>
+<List>
+                    {data
+                        .filter(item => item.done)
+                        .map(item => {
+                            return (
+                                <Item
+                                    key={item.id}
+                                    item={item}
+                                    remove={delItem}
+                                    toggle={toggle}
+                                />
+                            );
+                        })}
+                </List>
+
+            </Container>
         </div>
     );
 }

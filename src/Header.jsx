@@ -1,3 +1,38 @@
+// Header.jsx
+import { AppBar, Toolbar, Typography, Badge, IconButton } from "@mui/material";
+
+import {
+    LightMode as LightModeIcon,
+    DarkMode as DarkModeIcon,
+} from "@mui/icons-material";
+
+import { useContext } from "react";
+import { AppContext } from "./AppProvider";
+
 export default function Header({ count }) {
-    return <h1>Todo ({count})</h1>;
+    const { mode, setMode } = useContext(AppContext);
+
+    return (
+        <AppBar position="static">
+            <Toolbar>
+                <Typography sx={{ flexGrow: 1 }}>
+                    <Badge
+                        badgeContent={count}
+                        color="error">
+                        Todo
+                    </Badge>
+                </Typography>
+                
+                {mode == "dark" ? (
+                    <IconButton onClick={() => setMode("light")}>
+                        <LightModeIcon />
+                    </IconButton>
+                ) : (
+                    <IconButton onClick={() => setMode("dark")}>
+                        <DarkModeIcon />
+                    </IconButton>
+                )}
+            </Toolbar>
+        </AppBar>
+    );
 }
